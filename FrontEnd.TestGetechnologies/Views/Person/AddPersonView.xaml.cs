@@ -31,40 +31,43 @@ namespace FrontEnd.TestGetechnologies.Views.Person
 
         private void btnAgregar_Click(object sender, RoutedEventArgs e)
         {
-            var nombre = txtNombre.Text;
-            var apellidoP = txtApellidoPaterno.Text;
-            var apellidoM = txtApellidoMaterno.Text;
+            if (Validation()) 
+            {
+                var nombre = txtNombre.Text;
+                var apellidoP = txtApellidoPaterno.Text;
+                var apellidoM = txtApellidoMaterno.Text;
 
-            var response = personService.AddPerson(nombre, apellidoP, apellidoM, Guid.NewGuid()).GetAwaiter().GetResult();
+                var response = personService.AddPerson(nombre, apellidoP, apellidoM, Guid.NewGuid()).GetAwaiter().GetResult();
 
-            InitialTexBox();
-            MessageBox.Show(response.Message, "Alta de Persona", MessageBoxButton.OK);
+                InitialTexBox();
+                MessageBox.Show(response.Message, "Alta de Persona", MessageBoxButton.OK);
+            }
 
         }
 
         private void txtNombre_GotFocus(object sender, RoutedEventArgs e)
         {
-            if(txtNombre.Text == "Nombre") 
+            if(txtNombre.Text == "Nombre*") 
             {
                 txtNombre.Text = string.Empty;
                 txtNombre.Foreground = new SolidColorBrush(Colors.Black);
             }else if (string.IsNullOrEmpty(txtNombre.Text)) 
             {
-                txtNombre.Text = "Nombre";
+                txtNombre.Text = "Nombre*";
                 txtNombre.Foreground = new SolidColorBrush(Colors.DarkGray);
             }
         }
 
         private void txtApellidoPaterno_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (txtApellidoPaterno.Text == "Apellido Paterno")
+            if (txtApellidoPaterno.Text == "Apellido Paterno*")
             {
                 txtApellidoPaterno.Text = string.Empty;
                 txtApellidoPaterno.Foreground = new SolidColorBrush(Colors.Black);
             }
             else if (string.IsNullOrEmpty(txtNombre.Text))
             {
-                txtApellidoPaterno.Text = "Apellido Paterno";
+                txtApellidoPaterno.Text = "Apellido Paterno*";
                 txtApellidoPaterno.Foreground = new SolidColorBrush(Colors.DarkGray);
             }
         }
@@ -84,12 +87,28 @@ namespace FrontEnd.TestGetechnologies.Views.Person
         }
         private void InitialTexBox() 
         {
-            txtNombre.Text = "Nombre";
-            txtApellidoPaterno.Text = "Apellido Paterno";
+            txtNombre.Text = "Nombre*";
+            txtApellidoPaterno.Text = "Apellido Paterno*";
             txtApellidoMaterno.Text = "Apellido Materno";
             txtNombre.Foreground = new SolidColorBrush(Colors.DarkGray);
             txtApellidoPaterno.Foreground = new SolidColorBrush(Colors.DarkGray);
             txtApellidoMaterno.Foreground = new SolidColorBrush(Colors.DarkGray);
+        }
+
+        private bool Validation() 
+        {
+            var valid = true;
+            if(txtNombre.Text == "Nombre*") 
+            {
+                MessageBox.Show("El nombre es obligatorio", "Alta de Persona", MessageBoxButton.OK,MessageBoxImage.Error);
+                valid = false;
+            }
+            if (txtApellidoPaterno.Text == "Apellido Paterno*")
+            {
+                MessageBox.Show("El Apellido Paterno es obligatorio", "Alta de Persona", MessageBoxButton.OK, MessageBoxImage.Error);
+                valid = false;
+            }
+            return valid;
         }
     }
 }

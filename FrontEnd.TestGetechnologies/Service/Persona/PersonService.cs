@@ -39,6 +39,7 @@ namespace FrontEnd.TestGetechnologies.Service.Persona
                 // Manda a Log
                 //throw ex;
                 result.Success = false;
+                result.Message = "El servicio no se encuentra disponible";
             }
 
             return result;
